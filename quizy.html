@@ -42,6 +42,7 @@
 				ansSpans[i].innerHTML = qArr[i];
 			}
 			
+			//get checked choice
 			function getChecked() {
 				var choices = document.quiz.choice;
 				for (var i = 0; i < choices.length; i++) {
@@ -52,46 +53,64 @@
 				return undefined;
 			}
 			
+			//handle next button click
 			function nextHandler() {
 				//check if choice selected
 				var selectedChoice = getChecked();
 				if ( isNaN(selectedChoice) ) {
 					return;
 				}
-				
-				
-				//============================================================================
-				//choice selected, not last question ==> record answer, load next que. & ans.
-				//============================================================================
-				
 				//record answer
 				answers[currentQuestion] = selectedChoice;
-				
-				//load quiz data
-				currentQuestion++;
-				console.log(currentQuestion);
-				console.log(answers);
-				var request = new XMLHttpRequest();
-				request.open("GET", "quizappdata.json", false);
-				request.send(null);
-				request = JSON.parse(request.responseText);
-				var qArr = request[currentQuestion].answers;
-				var qQue = request[currentQuestion].question;
-				//check if last question
-				if (currentQuestion == request.length - 1)
-				{
-					currentQuestion -= 1;
+				//make sure not to go over the amount of questions
+				if (currentQuestion == request.length - 1) {
 					return;
 				}
+				//still more question, move to next question
+				currentQuestion++;
+				qArr = request[currentQuestion].answers;
+				qQue = request[currentQuestion].question;
+				//set question
 				var ansSpans = document.querySelectorAll("span");
-				
+				//set choices
 				document.getElementById("question").innerHTML = qQue;
-				for (var i = 0; i < ansSpans.length; i ++) {
+				for (var i = 0; i < document.quiz.choice.length; i++) {
+					if (document.quiz.choice[i].checked) {
+						document.quiz.choice[i].checked = "";
+					}
+				}
+				for (var i = 0; i < ansSpans.length; i++) {
 					ansSpans[i].innerHTML = qArr[i];
+					if (i == answers[currentQuestion]) {
+						document.quiz.choice[i].checked = "checked";
+					}
 				}
 			}
-			//nextHandler();
+			
+			function prevHandler() {
+				if (currentQuestion == 0) {
+					return;
+				} else {
+					var selectedChoice = getChecked();
+					if (selectedChoice) {
+						answers[currentQuestion] = selectedChoice;
+					}
+					currentQuestion -= 1;
+				}
+				qArr = request[currentQuestion].answers;
+				qQue = request[currentQuestion].question;
+				document.getElementById("question").innerHTML = qQue;
+				var ansSpans = document.querySelectorAll("span");
+				for (var i = 0; i < ansSpans.length; i++) {
+					ansSpans[i].innerHTML = qArr[i];
+					if (i == answers[currentQuestion]) {
+						document.quiz.choice[i].checked = "checked";
+					}
+				}
+			}
+			
 			document.quiz.next.addEventListener("click", nextHandler);
+			document.quiz.prev.addEventListener("click", prevHandler);
 		</script>
 	</body>
 </html>
