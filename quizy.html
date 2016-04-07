@@ -27,17 +27,21 @@
 		</form>
 		<script>
 			var answers = [];
-			/*
+			var currentQuestion = 0;
+			
+			//initial load
 			var request = new XMLHttpRequest();
 			request.open("GET", "quizappdata.json", false);
 			request.send(null);
-			var quizData = JSON.parse(request.responseText);
-			var choice = document.quiz.choice;
-			document.getElementById("question").innerHTML = quizData[0].question;
-			for (var i = 0; i < choice.length; i++) {
-				document.getElementById("aspan"+i).innerHTML = quizData[0].answers[i];
+			request = JSON.parse(request.responseText);
+			var qArr = request[currentQuestion].answers;
+			var qQue = request[currentQuestion].question;
+			var ansSpans = document.querySelectorAll("span");
+			document.getElementById("question").innerHTML = qQue;
+			for (var i = 0; i < ansSpans.length; i ++) {
+				ansSpans[i].innerHTML = qArr[i];
 			}
-			*/
+			
 			function getChecked() {
 				var choices = document.quiz.choice;
 				for (var i = 0; i < choices.length; i++) {
@@ -50,31 +54,44 @@
 			
 			function nextHandler() {
 				//check if choice selected
+				var selectedChoice = getChecked();
+				if ( isNaN(selectedChoice) ) {
+					return;
+				}
 				
-				//check if last question
 				
 				//============================================================================
 				//choice selected, not last question ==> record answer, load next que. & ans.
 				//============================================================================
 				
+				//record answer
+				answers[currentQuestion] = selectedChoice;
+				
 				//load quiz data
+				currentQuestion++;
+				console.log(currentQuestion);
+				console.log(answers);
 				var request = new XMLHttpRequest();
 				request.open("GET", "quizappdata.json", false);
 				request.send(null);
 				request = JSON.parse(request.responseText);
-				var qArr = request[0].answers;
-				var qQue = request[0].question;
+				var qArr = request[currentQuestion].answers;
+				var qQue = request[currentQuestion].question;
+				//check if last question
+				if (currentQuestion == request.length - 1)
+				{
+					currentQuestion -= 1;
+					return;
+				}
 				var ansSpans = document.querySelectorAll("span");
-				
-				//console.log(qArr);
-				//console.log(qQue);
 				
 				document.getElementById("question").innerHTML = qQue;
 				for (var i = 0; i < ansSpans.length; i ++) {
 					ansSpans[i].innerHTML = qArr[i];
 				}
 			}
-			nextHandler();
+			//nextHandler();
+			document.quiz.next.addEventListener("click", nextHandler);
 		</script>
 	</body>
 </html>
