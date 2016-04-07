@@ -5,13 +5,34 @@
 		<title>Quizy - The Quiz Game</title>
 	</head>
 	<body>
+		<h1 id="question"></h1>
 		<form name="quiz">
-		
+			<div>
+			<input type="radio" name="agroup" id="a1" value="0"><span id="aspan0"></span>
+			</div>
+			<div>
+			<input type="radio" name="agroup" id="a2" value="1"><span id="aspan1"></span>
+			</div>
+			<div>
+			<input type="radio" name="agroup" id="a3" value="2"><span id="aspan2"></span>
+			</div>
+			<div>
+			<input type="radio" name="agroup" id="a4" value="3"><span id="aspan3"></span>
+			</div>
+			<br>
 			<input type="button" name="prev" value="Previous Question">
 			<input type="button" name="next" value="Next Question">
 		</form>
 		<script>
-			
+			var request = new XMLHttpRequest();
+			request.open("GET", "quizappdata.json", false);
+			request.send(null);
+			var quizData = JSON.parse(request.responseText);
+			var agroup = document.quiz.agroup;
+			document.getElementById("question").innerHTML = quizData[0].question;
+			for (var i = 0; i < agroup.length; i++) {
+				document.getElementById("aspan"+i).innerHTML = quizData[0].answers[i];
+			}
 		</script>
 	</body>
 </html>
