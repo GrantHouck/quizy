@@ -8,30 +8,54 @@
 		<h1 id="question"></h1>
 		<form name="quiz">
 			<div>
-			<input type="radio" name="agroup" id="a1" value="0"><span id="aspan0"></span>
+				<input type="radio" name="choice" id="a1" value="0"><span id="choice0"></span>
 			</div>
 			<div>
-			<input type="radio" name="agroup" id="a2" value="1"><span id="aspan1"></span>
+				<input type="radio" name="choice" id="a2" value="1"><span id="choice1"></span>
 			</div>
 			<div>
-			<input type="radio" name="agroup" id="a3" value="2"><span id="aspan2"></span>
+				<input type="radio" name="choice" id="a3" value="2"><span id="choice2"></span>
 			</div>
 			<div>
-			<input type="radio" name="agroup" id="a4" value="3"><span id="aspan3"></span>
+				<input type="radio" name="choice" id="a4" value="3"><span id="choice3"></span>
 			</div>
 			<br>
 			<input type="button" name="prev" value="Previous Question">
 			<input type="button" name="next" value="Next Question">
+			<br>
+			<input type="button" name="fin" value="Finished, See Score">
 		</form>
 		<script>
 			var request = new XMLHttpRequest();
 			request.open("GET", "quizappdata.json", false);
 			request.send(null);
 			var quizData = JSON.parse(request.responseText);
-			var agroup = document.quiz.agroup;
+			var choice = document.quiz.choice;
 			document.getElementById("question").innerHTML = quizData[0].question;
-			for (var i = 0; i < agroup.length; i++) {
+			for (var i = 0; i < choice.length; i++) {
 				document.getElementById("aspan"+i).innerHTML = quizData[0].answers[i];
+			}
+			function getChecked() {
+				var choices = document.quiz.choice;
+				for (var i = 0; i < choices.length; i++) {
+					if (choices[i].checked) {
+						return choices[i].value;
+					}
+				}
+				return undefined;
+			}
+			
+			function nextHandler() {
+				//check if choice selected
+				
+				//check if last question
+				
+				//============================================================================
+				//choice selected, not last question ==> record answer, load next que. & ans.
+				//============================================================================
+				
+				//load quiz data
+				
 			}
 		</script>
 	</body>
