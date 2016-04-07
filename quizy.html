@@ -26,6 +26,8 @@
 			<input type="button" name="fin" value="Finished, See Score">
 		</form>
 		<script>
+			var answers = [];
+			/*
 			var request = new XMLHttpRequest();
 			request.open("GET", "quizappdata.json", false);
 			request.send(null);
@@ -35,6 +37,7 @@
 			for (var i = 0; i < choice.length; i++) {
 				document.getElementById("aspan"+i).innerHTML = quizData[0].answers[i];
 			}
+			*/
 			function getChecked() {
 				var choices = document.quiz.choice;
 				for (var i = 0; i < choices.length; i++) {
@@ -55,8 +58,23 @@
 				//============================================================================
 				
 				//load quiz data
+				var request = new XMLHttpRequest();
+				request.open("GET", "quizappdata.json", false);
+				request.send(null);
+				request = JSON.parse(request.responseText);
+				var qArr = request[0].answers;
+				var qQue = request[0].question;
+				var ansSpans = document.querySelectorAll("span");
 				
+				//console.log(qArr);
+				//console.log(qQue);
+				
+				document.getElementById("question").innerHTML = qQue;
+				for (var i = 0; i < ansSpans.length; i ++) {
+					ansSpans[i].innerHTML = qArr[i];
+				}
 			}
+			nextHandler();
 		</script>
 	</body>
 </html>
