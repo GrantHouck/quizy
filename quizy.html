@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Quizy - The Quiz Game</title>
+		<style>
+			.hidden {
+				display: none;
+			}
+		</style>
 	</head>
 	<body>
 		<h1 id="question"></h1>
@@ -25,6 +30,7 @@
 			<br>
 			<input type="button" name="fin" value="Finished, See Score">
 		</form>
+		<div id="score" class="hidden"></div>
 		<script>
 			var answers = [];
 			var currentQuestion = 0;
@@ -34,7 +40,7 @@
 			request.open("GET", "quizappdata.json", false);
 			request.send(null);
 			request = JSON.parse(request.responseText);
-			var qArr = request[currentQuestion].answers;
+			var qArr = request[currentQuestion].choices;
 			var qQue = request[currentQuestion].question;
 			var ansSpans = document.querySelectorAll("span");
 			document.getElementById("question").innerHTML = qQue;
@@ -68,7 +74,7 @@
 				}
 				//still more question, move to next question
 				currentQuestion++;
-				qArr = request[currentQuestion].answers;
+				qArr = request[currentQuestion].choices;
 				qQue = request[currentQuestion].question;
 				//set question
 				var ansSpans = document.querySelectorAll("span");
@@ -97,7 +103,7 @@
 					}
 					currentQuestion -= 1;
 				}
-				qArr = request[currentQuestion].answers;
+				qArr = request[currentQuestion].choices;
 				qQue = request[currentQuestion].question;
 				document.getElementById("question").innerHTML = qQue;
 				var ansSpans = document.querySelectorAll("span");
@@ -109,8 +115,26 @@
 				}
 			}
 			
+			function finHandler() {
+				if (answers.length != 4) {
+					return;	
+				}
+				
+				var score = 0;
+				for (var i = 0; i < request.length; i++) {
+					if (request[i].answer == parseInt(answers[i], 10)) {
+						score++;
+					}
+				}
+				
+				document.quiz.className = "hidden";
+				document.getElementById("score").className = "";
+				document.getElementById("score").innerHTML = "" + score + "/4";
+			}
+			
 			document.quiz.next.addEventListener("click", nextHandler);
 			document.quiz.prev.addEventListener("click", prevHandler);
+			document.quiz.fin.addEventListener("click", finHandler);
 		</script>
 	</body>
 </html>
