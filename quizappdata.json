@@ -1,7 +1,6 @@
-
-	[
-	{"question": "What's a math?", "choices": ["It's a food", "It's a water", "It's a game", "It's a field"], "answer": 2},
-	{"question": "Who's the number one basketball player?", "choices": ["Michael Jordan", "Shaq", "The Answer", "What year is it?"], "answer": 2},
-	{"question": "What is 1 + 1", "choices": [1, 2, 3, 4], "answer": 1},
-	{"question": "Who was the first President", "choices": ["Georgey Boy", "Abe", "Jefferson", "Adam"], "answer": 0}
-	]
+[
+{"question": "What's a math?", "choices": ["It's a food", "It's a water", "It's a game", "It's a field"], "answer": 2},
+{"question": "Who's the number one basketball player?", "choices": ["Michael Jordan", "Shaq", "The Answer", "What year is it?"], "answer": 2},
+{"question": "What is 1 + 1", "choices": [1, 2, 3, 4], "answer": 1},
+{"question": "Who was the first President", "choices": ["Georgey Boy", "Abe", "Jefferson", "Adam"], "answer": 0}
+]
