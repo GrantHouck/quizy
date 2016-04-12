@@ -93,7 +93,7 @@
 					return;
 				}
 				//record answer
-				answers[currentQuestion] = selectedChoice;
+				//answers[currentQuestion] = selectedChoice;
 				//make sure not to go over the amount of questions
 				if (currentQuestion == request.length - 1) {
 					return;
@@ -161,6 +161,19 @@
 				document.getElementById("score").innerHTML = "" + score + "/4";
 			}
 			
+			function radioHandler(e) {
+				var el = e.target;
+				var type = e.type;
+				//console.log(el);
+				for (var i = 0; i < document.quiz.choice.length; i++) {
+					//console.log(document.quiz.choice[i]);
+					if (el == document.quiz.choice[i]) {
+						console.log("lawl");
+						answers[currentQuestion] = el.value;
+					}
+				}
+			}
+			document.quiz.addEventListener("click", radioHandler);
 			document.quiz.next.addEventListener("click", nextHandler);
 			document.quiz.prev.addEventListener("click", prevHandler);
 			document.quiz.fin.addEventListener("click", finHandler);
