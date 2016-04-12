@@ -7,6 +7,24 @@
 			.hidden {
 				display: none;
 			}
+			input[type=button] {
+				font-size: 15px;
+				padding: 5px;
+				letter-spacing: .9px;
+			}
+			#prev {
+				background-color: #61A9E1;
+				width: 181px;
+			}
+			#next {
+				background-color: #61A9E1;
+				width: 181px;
+				/*margin-left: -4px;*/
+			}
+			#fin {
+				background-color: #BE726E;
+				width: 362px;
+			}
 		</style>
 	</head>
 	<body>
@@ -25,10 +43,9 @@
 				<input type="radio" name="choice" id="a4" value="3"><span id="choice3"></span>
 			</div>
 			<br>
-			<input type="button" name="prev" value="Previous Question">
-			<input type="button" name="next" value="Next Question">
+			<input type="button" id="prev" name="prev" value="Previous Question"><input type="button" id="next" name="next" value="Next Question">
 			<br>
-			<input type="button" name="fin" value="Finished, See Score">
+			<input type="button" id="fin" name="fin" value="Finished, See Score">
 		</form>
 		<div id="score" class="hidden"></div>
 		<script>
@@ -47,6 +64,7 @@
 			for (var i = 0; i < ansSpans.length; i ++) {
 				ansSpans[i].innerHTML = qArr[i];
 			}
+			
 			
 			//get checked choice
 			function getChecked() {
@@ -80,11 +98,13 @@
 				var ansSpans = document.querySelectorAll("span");
 				//set choices
 				document.getElementById("question").innerHTML = qQue;
+				//uncheck radio buttons
 				for (var i = 0; i < document.quiz.choice.length; i++) {
 					if (document.quiz.choice[i].checked) {
 						document.quiz.choice[i].checked = "";
 					}
 				}
+				//if an answer has previously been checked, check it
 				for (var i = 0; i < ansSpans.length; i++) {
 					ansSpans[i].innerHTML = qArr[i];
 					if (i == answers[currentQuestion]) {
@@ -98,6 +118,7 @@
 					return;
 				} else {
 					var selectedChoice = getChecked();
+					//if the user previously checked an answer, and then check a different answer, this saves the most recent answer
 					if (selectedChoice) {
 						answers[currentQuestion] = selectedChoice;
 					}
@@ -135,6 +156,7 @@
 			document.quiz.next.addEventListener("click", nextHandler);
 			document.quiz.prev.addEventListener("click", prevHandler);
 			document.quiz.fin.addEventListener("click", finHandler);
+			
 		</script>
 	</body>
 </html>
