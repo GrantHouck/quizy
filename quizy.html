@@ -52,6 +52,14 @@
 			var answers = [];
 			var currentQuestion = 0;
 			
+			//check if any radio is checked, and uncheck it.
+			for (var i = 0; i < document.quiz.choice.length; i++)
+			{
+				if ( document.quiz.choice[i].checked ) {
+					document.quiz.choice[i].checked = "";
+				}
+			}
+			
 			//initial load
 			var request = new XMLHttpRequest();
 			request.open("GET", "quizappdata.json", false);
@@ -147,7 +155,7 @@
 						score++;
 					}
 				}
-				
+				document.getElementById("question").innerHTML = "You Scored";
 				document.quiz.className = "hidden";
 				document.getElementById("score").className = "";
 				document.getElementById("score").innerHTML = "" + score + "/4";
