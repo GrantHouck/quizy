@@ -74,6 +74,107 @@
 			}
 			
 			
+			//check for cookie logic
+			//try and retrieve username and password from cookie
+			var un = document.cookie.indexOf(" userName=");
+			if (un == -1) {
+				un = document.cookie.indexOf("userName=");
+			}
+			var pw = document.cookie.indexOf(" passWord=");
+			if (pw == -1) {
+				pw = document.cookie.indexOf("passWord=");
+			}
+			//if missing username or password check if the are in the localStorage
+			if (un == -1 || pw == -1) {
+				//login
+				//-------check if user has logged in before------------
+				if ( !(localStorage.getItem("username")) || !(localStorage.getItem("password")) ) {
+					//--------user has never logged in, make a user name and password-----------
+					var userName = "";
+					var passWord = ""
+					while ( userName.length <= 0  && passWord.length <= 0 ) {
+						userName = prompt("Please enter a username to play", "");
+						passWord = prompt("Please enter a password to play", "");
+					}
+					//--------save username and password in  localStorage-----------
+					localStorage.setItem("password", passWord);
+					localStorage.setItem("username", userName);
+					//----------save username and password in cookie---------
+					var now = new Date();
+					now.setMonth(now.getMonth() + 6);
+					document.cookie = "userName=" + userName + ";expires= " + now.toUTCString();
+					document.cookie = "passWord=" + passWord + ";expires= " + now.toUTCString();
+					alert("Thanks for registering!");
+				//no cookie, yes localStorage
+				} else {
+					
+					var expireDate = new Date();
+					expireDate.setMonth(expireDate.getMonth() + 6);
+					document.cookie = "userName=" + localStorage.getItem("username") +
+									  ";expires=" + expireDate.toUTCString();
+					document.cookie = "passWord=" + localStorage.getItem("password") +
+									  ";expires=" + expireDate.toUTCString();
+					alert("Welcome back " + localStorage.getItem("username"));
+					
+					
+				}
+			//----yes cookie
+			} else {
+				if (localStorage.getItem("password") && localStorage.getItem("username")) {
+					alert("Welcome back, " + localStorage.getItem("username"));
+					
+				} else {
+					var value = document.cookie;
+					var unBegin = value.indexOf("=", un) + 1;
+					var pwBegin = value.indexOf("=", pw) + 1;
+					var unEnd = value.indexOf(";", unBegin);
+					if (unEnd == -1) {
+						unEnd = value.length;
+					}
+					var pwEnd = value.indexOf(";", pwBegin);
+					if (pwEnd == -1) {
+						pwEnd = value.length;
+					}
+					var username = value.substring(unBegin, unEnd);
+					var password = value.substring(pwBegin, pwEnd);
+					var unNew = "";
+					var pwNew = "";
+					var makeNew = false;
+					var login = "";
+					while ((unNew == "" && pwNew == "") && !(makeNew)) {
+						login = prompt("Type 0: To login in, Type 1: To register new","0");
+						if (login == "0") {
+							unNew = prompt("Please re-enter your username");
+							pwNew = prompt("Please re-enter your password");
+							if (unNew == username && pwNew == password) {
+								localStorage.setItem("password", pwNew);
+								localStorage.setItem("username", unNew);
+							} else {
+								alert("Incorrect username or password");
+								unNew = "";
+								pwNew = "";
+							}
+						} else {
+							unNew = prompt("Please enter a username", "");
+							pwNew = prompt("Please enter a password", "");
+							if (unNew != "" && pwNew != "") {
+								localStorage.setItem("username", unNew);
+								localStorage.setItem("password", pwNew);
+								var expireDate = new Date();
+								expireDate.setMonth(expireDate.getMonth() + 6);
+								document.cookie = "userName=" + unNew + ";expires=" +
+												  expireDate.toUTCString();
+								document.cookie = "passWord=" + pwNew + ";expires=" +
+												  expireDate.toUTCString();
+							}
+						}
+					}
+				}
+				
+			}
+				
+				
+			
 			//get checked choice
 			function getChecked() {
 				var choices = document.quiz.choice;
